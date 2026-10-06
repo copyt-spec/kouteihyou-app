@@ -1,0 +1,35 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# 部門内共有サーバー（server/index.ts）のSQLiteデータ。実データを含むため配布物には含めない
+server/data
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+
+# Electronパッケージング（2026-09-25追加。5-4ステップ3参照）
+# server-bundle.cjsはnpm run build:server-bundleで生成する成果物。releaseはelectron-builderの出力先
+electron/server-bundle.cjs
+release
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

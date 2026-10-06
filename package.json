@@ -1,0 +1,71 @@
+{
+  "name": "kouteihyou-app",
+  "private": true,
+  "version": "0.0.0",
+  "description": "北条工場 工程表（Ganttチャート）",
+  "author": "真面目一気",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "server": "tsx server/index.ts",
+    "typecheck:server": "tsc -p tsconfig.server.json --noEmit",
+    "electron:dev": "electron .",
+    "build:server-bundle": "esbuild server/index.ts --bundle --platform=node --format=cjs --outfile=electron/server-bundle.cjs --external:better-sqlite3 --external:ws",
+    "electron:pack": "npm run build && npm run build:server-bundle && electron-builder --mac --dir",
+    "electron:build": "npm run build && npm run build:server-bundle && electron-builder --mac"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "encoding-japanese": "^2.4.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "ws": "^8.21.3"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^3.1.1",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^6.1.1",
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "oxlint": "^1.81.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  },
+  "build": {
+    "appId": "com.takedanaoya.kouteihyou",
+    "productName": "工程表",
+    "directories": {
+      "output": "release",
+      "buildResources": "electron/build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/main.cjs",
+      "electron/preload.cjs",
+      "electron/server-bundle.cjs",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**"
+    ],
+    "mac": {
+      "target": ["dmg", "zip"],
+      "category": "public.app-category.business",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "electron/entitlements.mac.plist",
+      "entitlementsInherit": "electron/entitlements.mac.plist"
+    },
+    "afterSign": "electron/notarize.cjs"
+  }
+}

@@ -1,0 +1,508 @@
+:root{
+  --ink:#14161A; --mist:#565D6B; --paper:#F3F4F7; --surface:#FFFFFF; --surface-2:#F8F9FB;
+  --line:#E2E4E9; --signal:#0B5FFF; --signal-soft:#EAF1FF; --signal-ink:#0B4FCC;
+  --sage:#1E9E62; --sage-soft:#E7F7EF; --amber:#B8720A; --amber-soft:#FCF1DD;
+  --rose:#D33B3B; --rose-soft:#FCEAEA; --violet:#7C4FE0; --violet-soft:#F1EBFC;
+  --weekend:#EFF1F5;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#EDEEF2; --mist:#ACB3BE; --paper:#101216; --surface:#181B21; --surface-2:#1E2229;
+    --line:#2A2E37; --signal:#5B9CFF; --signal-soft:#152238; --signal-ink:#8FBBFF;
+    --sage:#3FCC8A; --sage-soft:#122A20; --amber:#E3A83E; --amber-soft:#2E230F;
+    --rose:#F16B6B; --rose-soft:#301717; --violet:#B79CF5; --violet-soft:#241B36;
+    --weekend:#1B1E25;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#EDEEF2; --mist:#ACB3BE; --paper:#101216; --surface:#181B21; --surface-2:#1E2229;
+  --line:#2A2E37; --signal:#5B9CFF; --signal-soft:#152238; --signal-ink:#8FBBFF;
+  --sage:#3FCC8A; --sage-soft:#122A20; --amber:#E3A83E; --amber-soft:#2E230F;
+  --rose:#F16B6B; --rose-soft:#301717; --violet:#B79CF5; --violet-soft:#241B36;
+  --weekend:#1B1E25;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:'Noto Sans JP',-apple-system,sans-serif; font-size:16px; padding-inline:16px; padding-block:20px 40px}
+.mono{font-family:'DM Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif; text-wrap:balance; margin:0}
+.shell{max-width:1320px; margin:0 auto; display:flex; flex-direction:column; gap:16px}
+
+.topbar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px}
+.topbar-title{display:flex; flex-direction:column; gap:2px}
+.eyebrow{display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; letter-spacing:.08em; color:var(--signal); text-transform:uppercase}
+.livedot{width:8px; height:8px; border-radius:50%; background:var(--sage); box-shadow:0 0 0 3px var(--sage-soft); animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1} 50%{opacity:.4}}
+.topbar h1{font-size:24px; font-weight:900}
+.topbar-sub{font-size:14.5px; color:var(--mist)}
+.topbar-actions{display:flex; align-items:center; gap:10px}
+.gearbtn{font-size:19px; line-height:1; padding:9px 12px}
+.toolbar{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+
+.btn{font:inherit; font-weight:700; font-size:15px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); padding:10px 14px; cursor:pointer; transition:transform .1s, background .15s, border-color .15s}
+.btn:hover{border-color:var(--signal)}
+.btn:active{transform:scale(.97)}
+.btn.icon{padding:10px 12px}
+.btn.primary{background:var(--signal); border-color:var(--signal); color:#fff}
+.btn.primary:hover{background:var(--signal-ink); border-color:var(--signal-ink)}
+.btn.small{font-size:13.5px; padding:7px 12px}
+.btn.ghost{background:none}
+
+.segments{display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--line); border-radius:11px; padding:4px; width:fit-content; max-width:100%; overflow-x:auto}
+.segbtn{font:inherit; font-weight:700; font-size:15px; color:var(--mist); background:none; border:none; border-radius:8px; padding:9px 16px; cursor:pointer; white-space:nowrap}
+.segbtn.active{background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+.datejump{display:flex; align-items:center; gap:6px; font-weight:700}
+.datejump .rangeLabel{min-width:190px; text-align:center; font-size:15px}
+.screenbody{display:flex; flex-direction:column; gap:16px}
+
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px}
+.stat{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+.stat .n{font-family:'DM Mono',monospace; font-size:28px; font-weight:500; line-height:1}
+.stat .l{font-size:13px; color:var(--mist); margin-top:5px}
+.stat.warn .n{color:var(--amber)}
+.stat.bad .n{color:var(--rose)}
+.stat.good .n{color:var(--sage)}
+
+.alertstrip{display:flex; flex-direction:column; gap:6px; background:var(--rose-soft); border:1px solid var(--rose); border-radius:12px; padding:12px 16px}
+.alertstrip .row{display:flex; align-items:baseline; gap:8px; font-size:14px; color:var(--ink)}
+.alertstrip .row b{color:var(--rose)}
+.alertstrip.empty{background:var(--sage-soft); border-color:var(--sage); color:var(--sage); font-size:14px; padding:10px 16px}
+
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+.panel-head{display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:6px}
+.panel-note{font-size:12.5px; color:var(--mist)}
+.unschedrow{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px dashed var(--line); font-size:14px}
+.unschedrow:last-child{border-bottom:none}
+.badge-pending{font-size:12px; font-weight:700; padding:4px 10px; border-radius:99px; background:var(--amber-soft); color:var(--amber); white-space:nowrap}
+.rowbadge{font-size:11px; font-weight:700; padding:2px 8px; border-radius:99px; background:var(--amber-soft); color:var(--amber)}
+
+.legend{display:flex; flex-wrap:wrap; gap:14px; font-size:13px; color:var(--mist); background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 14px}
+.legend .sw{display:inline-flex; align-items:center; gap:6px}
+.legend .dot{width:12px; height:12px; border-radius:4px; flex-shrink:0}
+.legend .dot.done{background:var(--surface-2); border:1.5px solid var(--mist)}
+.legend .dot.active{background:var(--signal)}
+.legend .dot.reserved{background:var(--sage)}
+.legend .dot.delay{background:var(--rose)}
+.legend .dot.tentative{background:transparent; border:1.5px dashed var(--mist)}
+.procdot{width:9px; height:9px; border-radius:3px; flex-shrink:0; box-shadow:0 0 0 1px rgba(255,255,255,.55)}
+
+.filterbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px}
+.filterbar .ffield{display:flex; flex-direction:column; gap:3px}
+.filterbar .ffield label{font-size:11px; color:var(--mist); font-weight:700}
+.filterbar input, .filterbar select{font:inherit; font-size:13.5px; padding:7px 9px; border-radius:8px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink)}
+.filterbar input[type=search]{min-width:160px}
+.filterbar .fclear{align-self:center}
+
+.fchips{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.fchip{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; background:var(--signal-soft); color:var(--signal-ink); border-radius:99px; padding:5px 6px 5px 10px; white-space:nowrap}
+.fchip .fchipx{border:none; background:none; color:inherit; cursor:pointer; font-size:11px; font-weight:900; padding:2px; line-height:1}
+.faddrow{display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.faddrow .lrhint{font-size:12.5px; color:var(--mist)}
+
+.labelfieldspanel{display:flex; flex-wrap:wrap; gap:8px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px}
+.labelfieldspanel label{display:flex; align-items:center; gap:5px; font-size:13px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:6px 10px}
+.labelfieldspanel input{accent-color:var(--signal)}
+
+.loadrowspanel{display:flex; flex-direction:column; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px}
+.loadrowspanel-note{font-size:12px; color:var(--mist)}
+.loadrowslist{display:flex; flex-direction:column; gap:6px}
+.loadrowitem{display:flex; align-items:center; gap:10px; font-size:13px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:6px 10px; flex-wrap:wrap}
+.loadrowitem .lrlabel{font-weight:700; flex:1; min-width:120px}
+.loadrowitem .lrcap{display:flex; align-items:center; gap:4px; font-size:12px; color:var(--mist)}
+.loadrowitem .lrcap .lrcapsrc{font-size:10.5px; opacity:.8}
+.loadrowitem .lrremove{border:none; background:none; color:var(--mist); cursor:pointer; font-weight:900; font-size:13px}
+.loadrowadd{display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.loadrowadd select{font:inherit; font-size:13.5px; padding:7px 9px; border-radius:8px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink)}
+
+/* 書き戻し設定タブの列エディタ（2026-09-23追加。.loadrowitem/.loadrowslist/.loadrowadd/.lrremoveを流用） */
+.wbcolitem select, .wbcolitem input[type="text"]{font:inherit; font-size:13px; padding:6px 8px; border-radius:7px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
+.wbcol-move{display:flex; flex-direction:column; gap:2px}
+.wbcol-move .btn{padding:2px 6px; font-size:10px; line-height:1}
+
+.loadrow{display:flex; border-bottom:1px solid var(--line); background:var(--surface-2)}
+/* 左端の情報列（オーダー情報／ライン情報／工程表名など）は横スクロールしても常に見えるよう固定する
+   （2026-09-24追加。.row-label/.axis-rowlabel/.loadrow-labelはOrderScreen・LineScreen(横表示)・
+   俯瞰ビューで共通に使っているクラスなので、ここでまとめてsticky leftにすれば全画面に効く） */
+.loadrow-label{width:150px; flex-shrink:0; padding:6px 14px; border-right:1px solid var(--line); display:flex; flex-direction:column; justify-content:center; gap:1px; position:sticky; left:0; z-index:2; background:var(--surface-2)}
+.loadrow-label .lname{font-size:11.5px; font-weight:700; color:var(--mist)}
+.loadrow-label .loadrow-cap{font-size:10px; color:var(--mist); cursor:help; border-bottom:1px dotted var(--mist); width:fit-content}
+.loadrow-cells{flex:1; display:flex}
+.loadcell{position:relative; min-height:26px; border-right:1px dashed var(--line); font-size:9px; line-height:1.2; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--mist); font-family:'DM Mono',monospace}
+.loadcell.hasevent::after{content:""; position:absolute; top:2px; right:2px; width:5px; height:5px; border-radius:50%; background:var(--violet)}
+.loadcell:last-child{border-right:none}
+.loadcell .lc-hours{display:block}
+.loadcell .lc-rate{display:block; font-weight:700}
+.loadcell.ok{background:var(--sage-soft); color:var(--sage)}
+.loadcell.warn{background:var(--amber-soft); color:var(--amber)}
+.loadcell.over{background:var(--rose-soft); color:var(--rose); font-weight:700}
+/* 選択中ジョブの日付列を軽くハイライト（エクセルの列見出しハイライトに相当、2026-09-24追加）。
+   ok/warn/overの背景色を消さないようinset box-shadowの枠線で重ねる */
+.loadcell.colselected{box-shadow:inset 0 0 0 2px var(--signal)}
+
+.ganttpanel{background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden; margin-bottom:24px}
+/* .gridscrollにoverflow-x:autoを指定すると（overflow-yを明示していなくても）ブラウザの仕様上
+   overflow-yも実質autoになり、.gridscroll自体がposition:stickyの基準（最も近いスクロールコンテナ）に
+   なってしまう。以前はmax-heightを指定していなかったため.gridscroll自身は縦方向に一切スクロールせず
+   （中身の高さに合わせて伸びるだけ）、ページ全体（window）がスクロールしていた＝sticky topの基準先である
+   .gridscrollが実際にはスクロールしないため、上部固定が機能しない不具合があった（2026-09-24発見・修正）。
+   max-heightを指定して.gridscroll自身を縦にもスクロールするボックスにすることで、エクセルのウィンドウ枠の
+   固定と同じように「同じペイン内で上・左だけ固定してスクロールする」動作になる（縦表示の.axiscol-v/.col-label
+   の上部固定も同じ理由で機能していなかったため、この修正で合わせて直る） */
+.gridscroll{overflow-x:auto; overflow-y:auto; max-height:65vh}
+.ganttgrid{min-width:720px}
+
+/* オーダー進捗表：積み上げ工数・負荷率サマリ（LoadSummaryRows）＋日付軸をまとめて上部固定する
+   （2026-09-24追加）。「負荷を見ながら下の方で工程調整する」ため、行数が可変のLoadSummaryRowsごと
+   スクロールしても常に見える必要がある。.axisrow自身のposition:stickyはこのラッパーと二重にスティッキーに
+   なると同じtop:0を取り合って表示が重なってしまうため、ラッパー配下では無効化する */
+.stickyhead{position:sticky; top:0; z-index:4}
+.stickyhead .axisrow{position:static}
+
+.axisrow{display:flex; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--surface); z-index:2}
+.axis-rowlabel{width:150px; flex-shrink:0; padding:10px 14px; font-size:12.5px; font-weight:700; color:var(--mist); border-right:1px solid var(--line); display:flex; align-items:center; position:sticky; left:0; z-index:3; background:var(--surface)}
+.axis-cols{flex:1; display:flex; position:relative}
+.axis-col{flex:1; padding:10px 4px; text-align:center; font-size:12.5px; font-weight:700; color:var(--mist); border-right:1px solid var(--line)}
+.axis-col:last-child{border-right:none}
+.axis-col.weekend{background:var(--weekend)}
+.axis-col.today .d{color:var(--signal)}
+.axis-col .wd{display:block; font-size:11px; font-weight:500; opacity:.8}
+.axis-col .d{display:block; font-size:14.5px; font-family:'DM Mono',monospace}
+.axis-col.colselected{box-shadow:inset 0 0 0 2px var(--signal)}
+.axis-hours{flex:1; display:flex; position:relative}
+.axis-hour{flex:1; text-align:left; font-size:11.5px; color:var(--mist); font-family:'DM Mono',monospace; padding-left:2px; border-right:1px dashed var(--line)}
+.axis-hour:last-child{border-right:none}
+
+.bodyrow{display:flex; border-bottom:1px solid var(--line)}
+.bodyrow:last-child{border-bottom:none}
+.row-label{width:150px; flex-shrink:0; padding:10px 14px; border-right:1px solid var(--line); display:flex; flex-direction:column; justify-content:center; gap:2px; position:sticky; left:0; z-index:1; background:var(--surface)}
+.row-label .name{font-size:14.5px; font-weight:700}
+.row-label .sub{font-size:12px; color:var(--mist)}
+/* position:relative指定は撤去（2026-09-24）。.rowtoggleは常に.row-labelと併用されており、
+   .row-label側のposition:sticky（左列固定）と互換性のない同一詳細度のposition:relativeが
+   スタイルシート順で後勝ちして固定を無効化してしまっていたため。sticky自体もposition値としては
+   「配置された要素」に該当するので、.chevronのposition:absoluteの基準としてはそのまま機能する */
+.rowtoggle{cursor:pointer; user-select:none; padding-left:22px}
+.rowtoggle:hover{background:var(--surface-2)}
+.rowtoggle .chevron{position:absolute; left:8px; top:11px; font-size:10px; color:var(--mist)}
+.bodyrow.expanded .rowtoggle{background:var(--surface-2)}
+.bodyrow.expanded .rowtoggle .chevron{color:var(--ink)}
+.row-track{flex:1; position:relative; background-image:repeating-linear-gradient(to right, transparent, transparent calc(100%/7 - 1px), var(--line) calc(100%/7 - 1px), var(--line) calc(100%/7)); min-height:56px}
+.row-track.hourgrid{background-image:repeating-linear-gradient(to right, transparent, transparent calc(100%/14 - 1px), var(--line) calc(100%/14 - 1px), var(--line) calc(100%/14))}
+.row-track .weekend-bg{position:absolute; top:0; bottom:0; background:var(--weekend); z-index:0}
+/* 選択中ジョブを含む行を軽くハイライト（エクセルの行見出しハイライトに相当、2026-09-24追加） */
+.bodyrow.rowselected > .row-label{background:var(--signal-soft)}
+.bodyrow.rowselected > .row-track{background:var(--signal-soft)}
+
+.nowline{position:absolute; top:0; bottom:0; width:2px; background:var(--rose); z-index:5; pointer-events:none}
+.nowline::before{content:"NOW"; position:absolute; top:-2px; left:4px; font-size:9.5px; font-weight:700; color:var(--rose); font-family:'DM Mono',monospace}
+
+.jobbar{position:absolute; border-radius:7px; padding:4px 8px; font-size:12px; font-weight:700; color:#fff; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.15); display:flex; align-items:center; gap:4px; touch-action:none}
+/* オーダー進捗表：工程セグメントであることを見た目でもわかりやすくするため、角を立てて区切りをはっきりさせる */
+#orderGrid .jobbar{border-radius:2px}
+.jobbar:hover{filter:brightness(1.08); z-index:4}
+.jobbar.status-done{background:var(--surface-2); color:var(--ink); border:1.5px solid var(--mist)}
+.jobbar.status-active{background:var(--signal)}
+.jobbar.status-reserved{background:var(--sage)}
+.jobbar.status-delay{background:var(--rose)}
+.jobbar.status-tentative{background:var(--surface); color:var(--mist); border:1.5px dashed var(--mist)}
+.jobbar .progressfill{position:absolute; inset:0; background:rgba(255,255,255,.28); z-index:0}
+.jobbar .label{position:relative; z-index:1; display:flex; align-items:center; gap:4px; overflow:hidden}
+.jobbar .clip{position:relative; z-index:1; font-weight:900}
+.jobbar .badge{position:relative; z-index:1; font-size:10px}
+.jobbar.selected{outline:2.5px solid var(--signal); outline-offset:1px; z-index:5}
+.jobbar.dragging{cursor:grabbing; opacity:.85; z-index:6; box-shadow:0 4px 10px rgba(0,0,0,.25); transition:none}
+
+/* ライン工程表：縦表示（2026-09-22追加。時間軸が縦になり、ライン/資源が横並びの列になる。工程の情報量が
+   多いとき（品名など）にバーの高さに余裕を持たせたい場合向け） */
+.ganttgrid-v{display:flex; min-height:100%}
+.axiscol-v{width:70px; flex-shrink:0; border-right:1px solid var(--line); position:sticky; left:0; background:var(--surface); z-index:3}
+.axis-collabel{height:40px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--mist); border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--surface); z-index:2}
+.axis-vticks{display:flex; flex-direction:column}
+.axis-vtick{flex:1; padding:3px 6px; font-size:11px; color:var(--mist); font-family:'DM Mono',monospace; border-bottom:1px dashed var(--line); display:flex; flex-direction:column; justify-content:center; gap:1px}
+.axis-vtick:last-child{border-bottom:none}
+.axis-vtick.weekend{background:var(--weekend)}
+.axis-vtick.today .d{color:var(--signal)}
+.axis-vtick .wd{font-size:10px; font-weight:500; opacity:.8}
+.axis-vtick .d{font-size:12.5px}
+.axis-vticks.hourgrid-v .axis-vtick{border-bottom-style:dashed}
+
+.bodycol{display:flex; flex-direction:column; border-right:1px solid var(--line); flex-shrink:0}
+.bodycol:last-child{border-right:none}
+.col-label{height:40px; padding:6px 12px; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center; gap:1px; position:sticky; top:0; background:var(--surface); z-index:2}
+.col-label .name{font-size:13.5px; font-weight:700}
+.col-label .sub{font-size:11px; color:var(--mist); display:flex; align-items:center; gap:4px}
+.coltoggle{cursor:pointer; user-select:none}
+.coltoggle:hover{background:var(--surface-2)}
+.coltoggle .chevron{font-size:9px}
+.bodycol .coltoggle{transition:background .1s}
+.col-track{position:relative; flex:1; min-width:0}
+.col-track .weekend-bg-v{position:absolute; left:0; right:0; background:var(--weekend); z-index:0}
+
+.nowline-v{position:absolute; left:0; right:0; height:2px; background:var(--rose); z-index:5; pointer-events:none}
+.nowline-v::before{content:"NOW"; position:absolute; top:-11px; left:4px; font-size:9.5px; font-weight:700; color:var(--rose); font-family:'DM Mono',monospace}
+
+.jobbar-v{white-space:normal; align-items:flex-start; padding:6px 8px}
+.jobbar-v .label{flex-direction:column; align-items:flex-start; gap:3px}
+.jobbar-v .labelmain{display:flex; align-items:center; gap:4px}
+.jobbar-v .labelextra{font-size:10.5px; font-weight:500; opacity:.9; overflow-wrap:break-word}
+
+/* detail sheet */
+.scrim{position:fixed; inset:0; background:rgba(10,12,16,.4); opacity:0; pointer-events:none; transition:opacity .2s; z-index:20}
+.scrim.show{opacity:1; pointer-events:auto}
+.sheet{position:fixed; left:0; right:0; bottom:0; max-width:560px; margin:0 auto; background:var(--surface); border-radius:18px 18px 0 0; box-shadow:0 -8px 30px rgba(0,0,0,.2); transform:translateY(105%); transition:transform .25s ease; z-index:21; max-height:82vh; overflow-y:auto; padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet.show{transform:translateY(0)}
+.sheet-handle{width:40px; height:4px; border-radius:99px; background:var(--line); margin:0 auto 14px}
+.sheet-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px}
+.sheet-head h2{font-size:18px}
+.sheet-head .oid{font-size:13px; color:var(--mist); margin-top:3px}
+.sheet .closebtn{border:none; background:var(--surface-2); color:var(--mist); width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:16px; flex-shrink:0}
+.kv{display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin-bottom:14px}
+.kv .item{background:var(--surface-2); border-radius:10px; padding:9px 12px}
+.kv .item .k{font-size:11.5px; color:var(--mist); font-weight:700}
+.kv .item .v{font-size:14.5px; font-weight:700; margin-top:2px}
+.progressbar{height:9px; border-radius:99px; background:var(--surface-2); overflow:hidden; margin:4px 0 14px}
+.progressbar .fill{height:100%; background:var(--signal); border-radius:99px}
+.sheet .warnbox{background:var(--rose-soft); border:1px solid var(--rose); border-radius:10px; padding:10px 12px; font-size:13.5px; color:var(--rose); margin-bottom:12px}
+.sheet .lockbox{background:var(--amber-soft); border:1px solid var(--amber); border-radius:10px; padding:10px 12px; font-size:13.5px; color:var(--amber); margin-bottom:12px; display:flex; align-items:center; gap:8px}
+.sheet .pendingbox{background:var(--violet-soft); border:1px solid var(--violet); border-radius:10px; padding:10px 12px; font-size:13.5px; color:var(--violet); margin-bottom:12px; display:flex; align-items:center; gap:8px}
+.jumprow{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
+.jumprow .btn.small{font-size:13px; padding:7px 11px; background:var(--surface-2)}
+.adjrow{display:flex; justify-content:space-between; font-size:13.5px; padding:6px 0; border-top:1px dashed var(--line)}
+.adjrow:first-of-type{border-top:none}
+.adjresult{font-size:13px; font-weight:700; color:var(--signal-ink); background:var(--signal-soft); border-radius:10px; padding:9px 12px; margin-bottom:12px}
+.adjpanel{display:flex; flex-direction:column; gap:8px; background:var(--surface-2); border-radius:12px; padding:12px 14px; margin-top:14px}
+.adjpanel-head{font-size:12.5px; font-weight:700; color:var(--mist)}
+.adjbtns{display:flex; gap:6px; flex-wrap:wrap}
+.adjbtns .btn.small{font-size:13.5px; padding:7px 11px}
+.adjpanel-note{font-size:12px; color:var(--mist)}
+
+.selectionbar{display:flex; flex-wrap:wrap; align-items:center; gap:10px; background:var(--signal-soft); border:1px solid var(--signal); border-radius:12px; padding:10px 14px}
+.selectionbar-label{font-size:13.5px; font-weight:700; color:var(--signal-ink)}
+.selectionbar-hint{font-size:12.5px; color:var(--mist)}
+.selectionbar-actions{display:flex; gap:6px; margin-left:auto}
+
+@media (max-width:640px){
+  .row-label, .axis-rowlabel{width:104px; padding:8px 8px}
+  .kv{grid-template-columns:1fr}
+}
+
+/* メインメニュー／設定／工程表一覧（2026-09-22追加） */
+.backbtn{align-self:flex-start; margin-bottom:6px}
+.btn.danger{color:var(--rose); border-color:var(--rose)}
+.btn.danger:hover{background:var(--rose-soft)}
+
+.menushell{max-width:720px}
+.menugrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
+.menucard{display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px 20px 22px; cursor:pointer; font:inherit; color:var(--ink); transition:border-color .15s, transform .1s}
+.menucard:hover{border-color:var(--signal)}
+.menucard:active{transform:scale(.98)}
+.menucard-icon{font-size:26px; line-height:1}
+.menucard-title{font-size:17px; font-weight:900}
+.menucard-desc{font-size:13.5px; color:var(--mist)}
+
+.settingspanel{display:flex; flex-direction:column; gap:12px; max-width:560px}
+.settings-section-title{font-size:13px; font-weight:700; color:var(--mist)}
+.themeoptions{display:flex; flex-direction:column; gap:8px}
+.themeoption{display:grid; grid-template-columns:auto 1fr; column-gap:10px; row-gap:1px; align-items:center; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px; cursor:pointer}
+.themeoption.active{border-color:var(--signal); background:var(--signal-soft)}
+.themeoption input{grid-row:1 / span 2; accent-color:var(--signal)}
+.themeoption-label{font-size:14.5px; font-weight:700}
+.themeoption-desc{font-size:12.5px; color:var(--mist)}
+
+.newboardpanel{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.newboardinput{flex:1; min-width:220px; font:inherit; font-size:14.5px; padding:10px 12px; border-radius:9px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink)}
+
+.boardlist{display:flex; flex-direction:column; gap:10px}
+.boardcard{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:6px 8px 6px 4px}
+.boardcard-open{flex:1; min-width:200px; text-align:left; display:flex; flex-direction:column; gap:2px; background:none; border:none; font:inherit; color:var(--ink); cursor:pointer; padding:12px 12px}
+.boardcard-open:hover .boardcard-name{color:var(--signal-ink)}
+.boardcard-name{font-size:15.5px; font-weight:800}
+.boardcard-meta{font-size:12px; color:var(--mist)}
+.boardcard-actions{display:flex; gap:6px; padding-right:6px}
+.boardcard-rename{display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex:1; padding:8px}
+
+@media (max-width:640px){
+  .menugrid{grid-template-columns:1fr}
+  .boardcard-actions{width:100%; justify-content:flex-end}
+}
+
+/* 俯瞰ビュー（2026-09-23新設、同日V2改修：横一本の日付軸＋工程表ごとの縦並びに刷新。
+   ヘッダーは既存の.axisrow/.axis-cols/.axis-col（OrderScreenの日付軸）、
+   行は既存の.loadrow/.loadrow-cells/.loadcell（LoadSummaryRows）をそのまま流用し、
+   ここでは俯瞰ビュー固有の追加分のみ定義する） */
+.overview-section-label{font-size:12px; font-weight:800; color:var(--mist); letter-spacing:.02em; padding:12px 14px 4px}
+
+.boardrow.expanded{border-bottom-color:var(--signal)}
+.boardrow-label{width:150px; flex-direction:row; align-items:center; justify-content:space-between; gap:6px; background:none; border:none; border-right:1px solid var(--line); cursor:pointer; font:inherit; color:var(--ink); text-align:left}
+.boardrow-label:hover{background:var(--surface)}
+.boardrow.expanded .boardrow-label{background:var(--surface)}
+.boardrow-label .lname{font-size:12.5px; font-weight:700; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.boardrow-rate{font-size:14px; font-weight:900; font-family:'DM Mono',monospace; color:var(--mist); flex-shrink:0}
+.boardrow-rate.ok{color:var(--sage)}
+.boardrow-rate.warn{color:var(--amber)}
+.boardrow-rate.over{color:var(--rose)}
+
+.comborow-delete{align-self:center; margin:0 10px; flex-shrink:0}
+
+.overviewbreakdown{background:var(--surface-2); border-bottom:1px solid var(--line)}
+.subrow{border-bottom:1px dashed var(--line); background:none}
+.subrow:last-child{border-bottom:none}
+.subrow .loadrow-label{padding-left:26px; border-right:1px solid var(--line)}
+.subrow .loadrow-label .lname{font-size:11.5px; font-weight:600; color:var(--mist)}
+
+.comboaddbar{padding:8px 14px}
+.combform{margin:0 14px 12px; flex-wrap:wrap}
+.combform-boards{display:flex; flex-wrap:wrap; gap:6px 16px; flex:1; min-width:200px}
+.combform-board{display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; white-space:nowrap}
+
+@media (max-width:640px){
+  .boardrow-label{width:104px}
+  .boardrow-label .lname{font-size:11.5px}
+  .boardrow-rate{font-size:12.5px}
+}
+
+/* マスタ設定タブ（2026-09-22追加） */
+.masterblock{display:flex; flex-direction:column; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+.masterblock-head{font-size:14.5px; font-weight:800}
+.masteradd{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.masterlist{display:flex; flex-direction:column; gap:6px}
+.masteritem{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
+.masteritem-name{font-weight:700; font-size:14px}
+.masteritem-usage{font-size:12px; color:var(--mist)}
+.masteritem-actions{display:flex; gap:6px; margin-left:auto}
+.masteritem-rename{display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex:1}
+.codeinput{font:inherit; font-size:13px; padding:7px 9px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-family:var(--mono, monospace)}
+.codeinput.inline{width:110px; flex:none}
+.codeinput.dup{border-color:var(--rose); color:var(--rose)}
+.codeinput::placeholder{color:var(--mist)}
+
+/* ラインCD複数対応のチップUI（2026-09-23追加） */
+.codechips{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.codechip{display:inline-flex; align-items:center; gap:4px; font-size:12.5px; font-family:var(--mono, monospace); padding:4px 4px 4px 9px; border-radius:99px; background:var(--surface); border:1px solid var(--line); color:var(--ink)}
+.codechip.dup{border-color:var(--rose); color:var(--rose)}
+.codechip-remove{appearance:none; border:none; background:none; cursor:pointer; color:inherit; font-size:14px; line-height:1; padding:2px 5px; border-radius:99px; opacity:0.65}
+.codechip-remove:hover{opacity:1; background:var(--rose-soft)}
+
+@media (max-width:640px){
+  .masteritem-actions{width:100%; margin-left:0; justify-content:flex-end}
+  .codeinput.inline{width:96px}
+}
+
+/* 連携設定・稼働計画設定タブ（2026-09-22追加。共通の汎用テーブル・フォームスタイル） */
+.field{display:flex; flex-direction:column; gap:4px; min-width:130px}
+.field span{font-size:12px; color:var(--mist); font-weight:700}
+.field select, .field input{font:inherit; font-size:14.5px; padding:8px 10px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
+
+.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px}
+.tablewrap table{border-collapse:collapse; width:100%; font-size:13.5px}
+.tablewrap th, .tablewrap td{padding:8px 10px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap}
+.tablewrap tr:last-child td{border-bottom:none}
+.tablewrap th{color:var(--mist); font-weight:700; font-size:12px}
+.tablewrap td.dim{color:var(--mist)}
+
+.rawtable tr.header-row{background:var(--signal-soft)}
+.rawtable td.rownum{font-family:'DM Mono',monospace; color:var(--mist); cursor:pointer; font-size:11px; user-select:none}
+.rawtable tr.header-row td.rownum{color:var(--signal-ink); font-weight:700}
+.rawtable td.rownum .pick{display:inline-flex; align-items:center; gap:5px; border:1px solid transparent; border-radius:6px; padding:3px 6px}
+.rawtable tr:not(.header-row) td.rownum .pick:hover{border-color:var(--line); background:var(--surface-2)}
+.rawtable tr.header-row td.rownum .pick{background:var(--signal); color:#fff; border-color:var(--signal)}
+
+.maptable select, .maptable input[type=text]{font:inherit; font-size:12px; padding:5px 6px; border-radius:6px; border:1px solid var(--line); background:var(--surface); color:var(--ink); max-width:150px}
+.maptable .col-head{font-weight:700; font-size:12.5px}
+.keytoggle{display:flex; align-items:center; gap:5px; font-size:11px; color:var(--mist); margin-top:5px; white-space:nowrap}
+.keytoggle input{accent-color:var(--signal)}
+
+.filepills{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px}
+.filepill{display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:1px solid var(--line); background:var(--surface-2); cursor:pointer; font:inherit; font-size:13px; font-weight:700; color:var(--mist)}
+.filepill.active{background:var(--signal-soft); border-color:var(--signal); color:var(--signal-ink)}
+.filepill .dot{width:6px; height:6px; border-radius:50%; background:var(--line)}
+.filepill.mapped .dot{background:var(--sage)}
+.filepill .sub{font-weight:500; font-family:'DM Mono',monospace; font-size:11px; opacity:.75}
+
+.rulelist{display:flex; flex-direction:column; gap:8px}
+.rule{display:flex; flex-wrap:wrap; gap:8px; align-items:center; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
+.rule select, .rule input{font:inherit; font-size:12.5px; padding:6px 8px; border-radius:7px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
+.rule input.values{flex:1; min-width:140px}
+.combinator{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--mist); font-weight:700; margin:2px 0 8px}
+.combinator select{font:inherit; font-size:12px; padding:4px 8px; border-radius:7px; border:1px solid var(--line); background:var(--surface); color:var(--signal-ink); font-weight:700}
+.filter-badge{font-size:12px; font-weight:700; padding:4px 10px; border-radius:99px; background:var(--sage-soft); color:var(--sage)}
+
+.joincard{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px}
+.joinstep{display:flex; flex-direction:column; gap:2px}
+.joinstep .lbl{font-size:10.5px; color:var(--mist); text-transform:uppercase; letter-spacing:.04em}
+.joinstep .val{font-size:13px; font-weight:700}
+.arrow{color:var(--mist); font-size:16px}
+.chipfields{display:flex; gap:5px; flex-wrap:wrap}
+.chip{font-size:11px; font-weight:700; background:var(--signal-soft); color:var(--signal-ink); border-radius:99px; padding:3px 9px}
+.joinform{display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line)}
+.checklist{display:flex; flex-wrap:wrap; gap:8px; max-width:280px}
+.checklist label{display:flex; align-items:center; gap:4px; font-size:12px; background:var(--surface); border:1px solid var(--line); padding:4px 8px; border-radius:7px}
+.checklist input{accent-color:var(--signal)}
+
+.resulttable td, .resulttable th{white-space:normal}
+.unmatched{display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; color:var(--amber); background:var(--amber-soft); border-radius:99px; padding:2px 7px; margin-left:6px}
+.statuspill{font-size:11px; font-weight:700; border-radius:99px; padding:2px 9px}
+.statuspill.done{background:var(--sage-soft); color:var(--sage)}
+.statuspill.active{background:var(--signal-soft); color:var(--signal-ink)}
+.statuspill.other{background:var(--surface-2); color:var(--mist)}
+
+.disclaimer{font-size:12px; color:var(--mist); background:var(--surface-2); border:1px dashed var(--line); border-radius:10px; padding:10px 12px; line-height:1.6}
+.mappingtoast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--paper); font-size:13px; font-weight:600; padding:10px 18px; border-radius:99px; z-index:50; white-space:nowrap}
+
+/* 稼働計画設定：カレンダー・持ち工数グリッド */
+.wdrow{display:flex; gap:8px; flex-wrap:wrap}
+.wdbtn{display:flex; flex-direction:column; align-items:center; gap:6px; padding:11px 15px; border-radius:11px; border:1px solid var(--line); background:var(--surface-2); cursor:pointer; min-width:68px; font:inherit}
+.wdbtn .lbl{font-size:13.5px; font-weight:700; color:var(--mist)}
+.wdbtn .state{font-size:12px; font-weight:700; padding:3px 9px; border-radius:99px; background:var(--line); color:var(--mist)}
+.wdbtn.on .state{background:var(--sage-soft); color:var(--sage)}
+.wdbtn.off .state{background:var(--rose-soft); color:var(--rose)}
+
+.calgrid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
+.calgrid .dow{font-size:12px; color:var(--mist); text-align:center; font-weight:700; padding-bottom:2px}
+.calcell{aspect-ratio:1; border-radius:8px; border:1px solid var(--line); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:13px; background:var(--surface-2)}
+.calcell.work{background:var(--sage-soft); border-color:transparent; color:var(--sage)}
+.calcell.off{background:var(--rose-soft); border-color:transparent; color:var(--rose)}
+.calcell.empty{visibility:hidden}
+.calcell .tag{font-size:10px; opacity:.9}
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--mist); margin-top:10px}
+.legend .sw{display:inline-flex; align-items:center; gap:5px}
+.legend .dot{width:10px; height:10px; border-radius:3px}
+
+.capgrid input[type=number]{font:inherit; font-size:14px; width:62px; padding:6px 8px; border-radius:6px; border:1px solid var(--line); background:var(--surface); color:var(--ink); text-align:right}
+.wdchiprow{display:flex; gap:8px; flex-wrap:wrap}
+.wdchip{display:flex; align-items:center; gap:6px; padding:8px 12px; border-radius:9px; border:1px solid var(--line); background:var(--surface-2); font-size:13.5px; font-weight:700; cursor:pointer; user-select:none}
+.wdchip input{width:16px; height:16px; accent-color:var(--signal); cursor:pointer}
+
+/* 任意項目の追加・CSVインポート・未検出/追加項目バッジ（2026-09-23追加） */
+.badge{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:99px; margin-left:8px; vertical-align:middle; white-space:nowrap}
+.badge.orphaned{background:var(--amber-soft); color:var(--amber)}
+.badge.custom{background:var(--violet-soft); color:var(--violet)}
+.csvimport{display:flex; flex-direction:column; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line)}
+.csvpaste{font:inherit; font-size:13px; font-family:var(--mono, monospace); width:100%; resize:vertical; padding:9px 11px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
+
+.rulecards{display:flex; flex-direction:column; gap:8px}
+.rulecard{display:flex; align-items:center; gap:10px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:9px 12px; flex-wrap:wrap}
+.rulecard .idx{font-family:'DM Mono',monospace; font-size:13px; color:var(--mist); width:20px}
+.rulecard select{font:inherit; font-size:13.5px; padding:6px 9px; border-radius:7px; border:1px solid var(--line); background:var(--surface); color:var(--ink)}
+.updown{display:flex; gap:3px; margin-left:auto}
+.updown button{width:28px; height:28px; border-radius:6px; border:1px solid var(--line); background:var(--surface); color:var(--mist); cursor:pointer; font-size:14px}
+.updown button:hover{color:var(--signal); border-color:var(--signal)}
+.updown button:disabled{opacity:.4; cursor:not-allowed}
+
+.switchcard{display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:10px 14px; cursor:pointer}
+.switchcard span{font-size:14px; font-weight:700}
+.switchcard input{width:20px; height:20px; accent-color:var(--signal); cursor:pointer}
+
+.flagrow{display:flex; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid var(--line)}
+.flagrow:last-child{border-bottom:none}
+.flagrow .warn{font-size:12px; font-weight:700; padding:3px 9px; border-radius:99px}
+.flagrow .warn.over{background:var(--amber-soft); color:var(--amber)}
+
+@media (max-width:640px){
+  .joinstep{min-width:40%}
+  .rulecard{gap:6px}
+}

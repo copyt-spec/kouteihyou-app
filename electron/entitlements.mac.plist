@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!--
+    Hardened Runtime有効化（公証に必須）のための最小限のentitlements。
+    このアプリはMac App Store配布ではなく直接配布（dmg/zip）のため、App Sandbox
+    （com.apple.security.app-sandbox）は有効化していない。そのため、ネットワークの
+    送受信（サーバーとして動作モードでのWebSocket待受を含む）にサンドボックス用の
+    entitlement（network.client/network.server）は不要。
+    以下はElectron公式ドキュメントが推奨する、V8のJIT・Node.jsのネイティブモジュール
+    （better-sqlite3等）が正しく動作するために必要な最小セットのみ。
+  -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/>
+  <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/>
+  <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+  <true/>
+  <key>com.apple.security.cs.disable-library-validation</key>
+  <true/>
+</dict>
+</plist>
